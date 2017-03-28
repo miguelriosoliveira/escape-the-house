@@ -3,7 +3,7 @@
 <head>
     <title>Game!</title>
     <link rel="stylesheet" type="text/css" href="game.css">
-    <meta charset="utf-8"></meta>
+    <meta charset="utf-8"/>
 </head>
 <body>
 <div id="gameElements">
@@ -19,10 +19,14 @@
         </div>
         <div id="body_box1" class="hidden">
             <form autocomplete="off">
-                <input type="radio" id="1" name="Track" onclick="playAudio(1);"> Para dormir <br>
-                <input type="radio" id="2" name="Track" onclick="playAudio(2);"> Para jogar <br>
-                <input type="radio" id="3" name="Track" onclick="playAudio(3);"> Para matar <br>
-                <input type="radio" id="4" name="Track" onclick="playAudio(4);"> Para se matar <br>
+                <label for="track1">Para dormir</label>
+                <input type="radio" id="track1" onclick="playAudio(1)">
+                <label for="track2">Para jogar</label>
+                <input type="radio" id="track2" onclick="playAudio(2)">
+                <label for="track3">Para matar</label>
+                <input type="radio" id="track3" onclick="playAudio(3)">
+                <label for="track4">Para se matar</label>
+                <input type="radio" id="track4" onclick="playAudio(4)">
             </form>
         </div>
     </div>
@@ -40,16 +44,21 @@
         </div>
         <div id="body_itemBox">
             <form autocomplete="off">
-                <input type="checkbox" id="item1" disabled> Se vestir <br>
-                <input type="checkbox" id="item2" disabled> Tomar café <br>
-                <input type="checkbox" id="item3" disabled> Ir ao banheiro <br>
-                <input type="checkbox" id="item4" disabled> Pegar carteira <br>
-                <input type="checkbox" id="item5" disabled> Pegar chaves <br>
+                <label for="item1">Se vestir</label>
+                <input type="checkbox" id="item1" disabled>
+                <label for="item2">Tomar café</label>
+                <input type="checkbox" id="item2" disabled>
+                <label for="item3">Ir ao banheiro</label>
+                <input type="checkbox" id="item3" disabled>
+                <label for="item4">Pegar carteira</label>
+                <input type="checkbox" id="item4" disabled>
+                <label for="item5">Pegar chaves</label>
+                <input type="checkbox" id="item5" disabled>
             </form>
         </div>
     </div>
 
-    <video id="transition" controls="false" src="" hidden/>
+    <video id="transition" controls="false" src="" hidden></video>
 </div>
 
 <script src="game.js"></script>

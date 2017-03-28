@@ -1,41 +1,32 @@
-var canvas = document.getElementById('gameScreen');
-var context = canvas.getContext('2d');
-var canvasBoundingBox = canvas.getBoundingClientRect();
+let canvas = document.getElementById('gameScreen');
+let context = canvas.getContext('2d');
+let canvasBoundingBox = canvas.getBoundingClientRect();
 
-var mouseClickX = -1;
-var mouseClickY = -1;
-var mousePosX = -1;
-var mousePosY = -1;
+let mouseClickX = -1;
+let mouseClickY = -1;
+let mousePosX = -1;
+let mousePosY = -1;
 
-var fontSize = 30;
-var locationX = canvas.width * 0.05;
-var locationY = canvas.height * 0.95;
-
-var video = document.getElementById("transition");
+let fontSize = 30;
+let locationX = canvas.width * 0.05;
+let locationY = canvas.height * 0.95;
 
 // ===================== CLASSE CLICKABLE =====================
 
-var Clickable = function (x, y) {
+let Clickable = function (x, y) {
     this.x = x;
     this.y = y;
 
     this.isSelected = function (mouseX, mouseY) {
-        var isInsideWidth = false;
-        var isInsideHeight = false;
-
-        if (this.x <= mouseX && mouseX <= this.x + this.width) isInsideWidth = true;
-        if (this.y <= mouseY && mouseY <= this.y + this.height) isInsideHeight = true;
-
-        if (isInsideWidth && isInsideHeight) {
-            return true;
-        }
-        return false;
+        let isInsideWidth = this.x <= mouseX && mouseX <= this.x + this.width;
+        let isInsideHeight = this.y <= mouseY && mouseY <= this.y + this.height;
+        return isInsideWidth && isInsideHeight;
     };
 };
 
 // ===================== CLASSE OBJETO =====================
 
-var Object = function (x, y, width, height) {
+let Object = function (x, y, width, height) {
     Clickable.call(this, x, y);
     this.width = width;
     this.height = height;
@@ -43,7 +34,7 @@ var Object = function (x, y, width, height) {
 
 // ===================== CLASSE LOCAL =====================
 
-var Location = function (name, x, y, font) {
+let Location = function (name, x, y, font) {
     Clickable.call(this, x, y);
     this.name = name;
     this.font = font;
@@ -55,34 +46,26 @@ var Location = function (name, x, y, font) {
         context.font = this.font;
         context.fillText(this.name, this.x, this.y);
         context.strokeText(this.name, this.x, this.y);
-
         this.width = context.measureText(this.name).width;
     };
 
     this.isSelected = function (mouseX, mouseY) {
-        var isInsideWidth = false;
-        var isInsideHeight = false;
-
-        if (this.x <= mouseX && mouseX <= this.x + this.width) isInsideWidth = true;
-        if (this.y >= mouseY && mouseY >= this.y + this.height) isInsideHeight = true;
-
-        if (isInsideWidth && isInsideHeight) {
-            return true;
-        }
-        return false;
+        let isInsideWidth = this.x <= mouseX && mouseX <= this.x + this.width;
+        let isInsideHeight = this.y >= mouseY && mouseY >= this.y + this.height;
+        return isInsideWidth && isInsideHeight;
     };
 };
 
 // ===================== CLASSE CENÁRIO =====================
 
 writeLocations = function () {
-    for (var i = 0; i < currentScenario.locationList.length; i++) {
-        var location = currentScenario.locationList[i];
+    for (let i = 0; i < currentScenario.locationList.length; i++) {
+        let location = currentScenario.locationList[i];
         location.writeInCanvas(context);
     }
 };
 
-var Scenario = function (sceneObjects, locationList, backgroundImage) {
+let Scenario = function (sceneObjects, locationList, backgroundImage) {
     this.sceneObjects = sceneObjects;
     this.locationList = locationList;
     this.backgroundImage = backgroundImage;
@@ -91,29 +74,12 @@ var Scenario = function (sceneObjects, locationList, backgroundImage) {
     // (muda imagem de fundo, lista de itens e lista de locais para movimentação)
     this.chooseMe = function () {
         context.clearRect(0, 0, canvas.width, canvas.height);
-        var scene = new Image();
+        let scene = new Image();
         scene.onload = function () {
             context.drawImage(scene, 0, 0, canvas.width, canvas.height);
             writeLocations();
         };
         scene.src = this.backgroundImage;
-
-        // // lista de itens
-        // var itemBox = document.getElementById('body_itemBox');
-        // itemBox.innerHTML = '';
-
-        // for (var i = 0; i < this.sceneObjects.length; i++) {
-        // 	var label = document.createTextNode('Item ' + (i+1));
-
-        // 	var item = document.createElement("input");
-        // 	item.setAttribute('type', 'checkbox');
-        // 	item.setAttribute('id', 'item' + i);
-        // 	item.disabled = "disabled";
-
-        // 	itemBox.appendChild(item);
-        // 	itemBox.appendChild(label);
-        // 	itemBox.appendChild( document.createElement("br") );
-        // };
     };
 };
 
@@ -126,7 +92,7 @@ drawTransition = function (v) {
 
         // play na musica (após primeira transição)
         if (currentTransition.id == 'acordando') {
-            var firstMusic = document.getElementById('1');
+            let firstMusic = document.getElementById('1');
             firstMusic.click();
         }
         return false;
@@ -135,7 +101,7 @@ drawTransition = function (v) {
     setTimeout(drawTransition, 20, v);
 };
 
-var Transition = function (id, src, begin, end, sceneEnd) {
+let Transition = function (id, src, begin, end, sceneEnd) {
     this.id = id;
     this.src = src;
     this.begin = begin;
@@ -143,7 +109,7 @@ var Transition = function (id, src, begin, end, sceneEnd) {
     this.sceneEnd = sceneEnd;
 
     this.play = function () {
-        var videoPlayer = document.getElementById('transition');
+        let videoPlayer = document.getElementById('transition');
         currentTransition = this;
         videoPlayer.setAttribute('src', this.src);
 
@@ -161,74 +127,67 @@ var Transition = function (id, src, begin, end, sceneEnd) {
 
 // ===================== LOCAIS DA CASA =====================
 
-var transitionList = {};
-transitionList['Acordando'] = new Transition('acordando', 'Videos/anim-01.MP4', 32, 100, 'Quarto');
-transitionList['QuartoCorredor'] = new Transition('QuartoCorredor', 'Videos/anim-02.MP4', 2, 100, 'Corredor');
-transitionList['QuartoGuardaRoupas'] = new Transition('QuartoGuardaRoupas', 'Videos/arrumar.MP4', 3, 100, 'Quarto');
-transitionList['QuartoMesa'] = new Transition('QuartoMesa', 'Videos/indoMesa.MP4', 0, 7, 'Mesa');
-transitionList['PegandoCoisas'] = new Transition('PegandoCoisas', 'Videos/pegandoCoisas.MP4', 0, 16, 'Mesa2');
-transitionList['MesaQuarto'] = new Transition('MesaQuarto', 'Videos/voltandoDaMesa.MP4', 0, 100, 'Quarto');
-transitionList['Mesa2Quarto'] = new Transition('Mesa2Quarto', 'Videos/voltandoDaMesa.MP4', 0, 100, 'Quarto');
-transitionList['CorredorQuarto'] = new Transition('CorredorQuarto', 'Videos/anim-06.MP4', 3, 9, 'Quarto');
-transitionList['CorredorCozinha'] = new Transition('CorredorCozinha', 'Videos/anim-04.MP4', 3, 100, 'Cozinha');
-transitionList['CorredorBanheiro'] = new Transition('CorredorBanheiro', 'Videos/BanheiroCorredorTransit.mp4', 0, 12, 'Corredor');
-transitionList['CozinhaCorredor'] = new Transition('CozinhaCorredor', 'Videos/anim-05.MP4', 4, 14, 'Corredor');
-transitionList['Cafe'] = new Transition('Cafe', 'Videos/cafe.MP4', 2, 100, 'Cozinha');
-transitionList['CorredorSair'] = new Transition('CorredorSair', 'Videos/fim.MP4', 4, 100, 'Sair');
+let [transitionList, path] = [{}, "resources/videos/"];
+transitionList['Acordando'] = new Transition('acordando', `${path}beginning.mp4`, 32, 100, 'Quarto');
+transitionList['QuartoCorredor'] = new Transition('QuartoCorredor', `${path}room-to-hall.mp4`, 2, 100, 'Corredor');
+transitionList['QuartoGuardaRoupas'] = new Transition('QuartoGuardaRoupas', `${path}get-dress.mp4`, 3, 100, 'Quarto');
+transitionList['QuartoMesa'] = new Transition('QuartoMesa', `${path}desk.mp4`, 0, 7, 'Mesa');
+transitionList['PegandoCoisas'] = new Transition('PegandoCoisas', `${path}getting-things.mp4`, 0, 16, 'Mesa2');
+transitionList['MesaQuarto'] = new Transition('MesaQuarto', `${path}beck-from-desk.mp4`, 0, 100, 'Quarto');
+transitionList['Mesa2Quarto'] = new Transition('Mesa2Quarto', `${path}back-from-desk.mp4`, 0, 100, 'Quarto');
+transitionList['CorredorQuarto'] = new Transition('CorredorQuarto', `${path}hall-to-room.mp4`, 3, 9, 'Quarto');
+transitionList['CorredorCozinha'] = new Transition('CorredorCozinha', `${path}hall-to-kitchen.mp4`, 3, 100, 'Cozinha');
+transitionList['CorredorBanheiro'] = new Transition('CorredorBanheiro', `${path}bathroom-hall-transition.mp4`, 0, 12, 'Corredor');
+transitionList['CozinhaCorredor'] = new Transition('CozinhaCorredor', `${path}kitchen-to-hall.mp4`, 4, 14, 'Corredor');
+transitionList['Cafe'] = new Transition('Cafe', `${path}coffee.mp4`, 2, 100, 'Cozinha');
+transitionList['CorredorSair'] = new Transition('CorredorSair', `${path}end.mp4`, 4, 100, 'Sair');
 
-var corredorLocationList = [];
+let corredorLocationList = [];
 corredorLocationList.push(new Location('Banheiro', locationX, locationY - fontSize * corredorLocationList.length, fontSize + 'px Arial'));
 corredorLocationList.push(new Location('Cozinha', locationX, locationY - fontSize * corredorLocationList.length, fontSize + 'px Arial'));
 corredorLocationList.push(new Location('Quarto', locationX, locationY - fontSize * corredorLocationList.length, fontSize + 'px Arial'));
 corredorLocationList.push(new Location('Sair', locationX, locationY - fontSize * corredorLocationList.length, fontSize + 'px Arial'));
 
-var kitchenLocationList = [];
+let kitchenLocationList = [];
 kitchenLocationList.push(new Location('Corredor', locationX, locationY - fontSize * kitchenLocationList.length, fontSize + 'px Arial'));
 
-var guardaRoupaLocationList = [];
+let guardaRoupaLocationList = [];
 guardaRoupaLocationList.push(new Location('Quarto', locationX, locationY - fontSize * guardaRoupaLocationList.length, fontSize + 'px Arial'));
 
-var mesaLocationList = [];
+let mesaLocationList = [];
 mesaLocationList.push(new Location('Quarto', locationX, locationY - fontSize * mesaLocationList.length, fontSize + 'px Arial'));
 
-var bedroomLocationList = [];
+let bedroomLocationList = [];
 bedroomLocationList.push(new Location('Corredor', locationX, locationY - fontSize * bedroomLocationList.length, fontSize + 'px Arial'));
 bedroomLocationList.push(new Location('Mesa', locationX, locationY - fontSize * bedroomLocationList.length, fontSize + 'px Arial'));
 
 // =============== OBJETOS DA CENA 1 (Quarto, guarda-roupas e mesa) ===============
 
-var guardaRoupas = new Object(0, 230, 130, 220);
-var bedroomObjects = [guardaRoupas];
+let guardaRoupas = new Object(0, 230, 130, 220);
+let bedroomObjects = [guardaRoupas];
 
-var carteira = new Object(380, 320, 90, 65);
-var chaves = new Object(515, 315, 60, 60);
-var tableObjects = [carteira, chaves];
+let carteira = new Object(380, 320, 90, 65);
+let chaves = new Object(515, 315, 60, 60);
+let tableObjects = [carteira, chaves];
 
 // =============== OBJETOS DA CENA 3 (Cozinha) ===============
 
-var cafe = new Object(675, 455, 45, 75);
-var kitchenObjects = [cafe];
+let cafe = new Object(675, 455, 45, 75);
+let kitchenObjects = [cafe];
 
 // ======================= CENÁRIOS =======================
 
-var scenarios = {};
+let scenarios = {};
 // scenarios['Guarda-roupas'] = new Scenario(closetObjects, guardaRoupaLocationList, 'GuardaRoupas.jpg');
-scenarios['Mesa'] = new Scenario(tableObjects, mesaLocationList, 'Mesa.jpg');
-scenarios['Mesa2'] = new Scenario([], mesaLocationList, 'MesaVazia.jpg');
-scenarios['Quarto'] = new Scenario(bedroomObjects, bedroomLocationList, 'Quarto.jpg');
-scenarios['Cozinha'] = new Scenario(kitchenObjects, kitchenLocationList, 'Cozinha.jpg');
-scenarios['Corredor'] = new Scenario([], corredorLocationList, 'Corredor.jpg');
-scenarios['Sair'] = new Scenario([], [], 'Fim.jpg');
+scenarios['desk'] = new Scenario(tableObjects, mesaLocationList, 'desk.jpg');
+scenarios['emptyDesk'] = new Scenario([], mesaLocationList, 'empty-desk.jpg');
+scenarios['room'] = new Scenario(bedroomObjects, bedroomLocationList, 'room.jpg');
+scenarios['kitchen'] = new Scenario(kitchenObjects, kitchenLocationList, 'kitchen.jpg');
+scenarios['hall'] = new Scenario([], corredorLocationList, 'hall.jpg');
+scenarios['end'] = new Scenario([], [], 'end.jpg');
 
-// console.log(scenarios.length);
-
-var currentScenario = scenarios['Quarto'];
-var currentScenarioName = 'Quarto';
-
-// var currentScenario = scenarios['Corredor'];
-// var currentScenarioName = 'Corredor';
-
-// currentScenario.chooseMe();
+let currentScenario = scenarios['Quarto'];
+let currentScenarioName = 'Quarto';
 
 // ==================== EVENT LISTENERS ====================
 
@@ -237,16 +196,14 @@ canvas.addEventListener("click", function (event) {
     mouseClickX = Math.round(event.clientX - canvasBoundingBox.left);
     mouseClickY = Math.round(event.clientY - canvasBoundingBox.top);
 
-    // console.log("(" + clickX + " , " + clickY + ")");
-
     // se clicou em algum objeto do cenário, muda estado do checkbox correspondente
-    for (var i = 0; i < currentScenario.sceneObjects.length; i++) {
-        var object = currentScenario.sceneObjects[i];
+    for (let i = 0; i < currentScenario.sceneObjects.length; i++) {
+        let object = currentScenario.sceneObjects[i];
 
         if (object.isSelected(mouseClickX, mouseClickY)) {
             // marcar checkbox correspondente
-            var itemCheckbox;
-            var checkboxState;
+            let itemCheckbox;
+            let checkboxState;
 
             if (currentScenarioName == 'Cozinha') {
                 itemCheckbox = document.getElementById('item2');
@@ -267,38 +224,37 @@ canvas.addEventListener("click", function (event) {
             }
             checkboxState = itemCheckbox.checked;
             itemCheckbox.checked = !checkboxState;
-
             return;
         }
     }
     // se clicou em algum local da lista de locais, muda para o cenário correspondente
-    for (var i = 0; i < currentScenario.locationList.length; i++) {
-        var location = currentScenario.locationList[i];
+    for (let i = 0; i < currentScenario.locationList.length; i++) {
+        let location = currentScenario.locationList[i];
 
         if (location.isSelected(mouseClickX, mouseClickY)) {
             if (location.name == 'Banheiro') {
-                var itemCheckbox = document.getElementById('item3');
-                var checkboxState = itemCheckbox.checked;
+                let itemCheckbox = document.getElementById('item3');
+                let checkboxState = itemCheckbox.checked;
                 itemCheckbox.checked = !checkboxState;
             }
 
             // mudar para cenário correspondente
             if (location.name == 'Sair') {
-                var fezTarefa1 = document.getElementById('item1').checked;
-                var fezTarefa2 = document.getElementById('item2').checked;
-                var fezTarefa3 = document.getElementById('item3').checked;
-                var fezTarefa4 = document.getElementById('item4').checked;
-                var fezTarefa5 = document.getElementById('item5').checked;
+                let fezTarefa1 = document.getElementById('item1').checked;
+                let fezTarefa2 = document.getElementById('item2').checked;
+                let fezTarefa3 = document.getElementById('item3').checked;
+                let fezTarefa4 = document.getElementById('item4').checked;
+                let fezTarefa5 = document.getElementById('item5').checked;
 
                 if (fezTarefa1 && fezTarefa2 && fezTarefa3 && fezTarefa4 && fezTarefa5) {
-                    var nextTransition = currentScenarioName + location.name;
+                    let nextTransition = currentScenarioName + location.name;
                     transitionList[nextTransition].play();
                 } else {
                     alert("VOCÊ AINDA NÃO FEZ TODAS AS TAREFAS!");
                 }
                 return;
             }
-            var nextTransition = currentScenarioName + location.name;
+            let nextTransition = currentScenarioName + location.name;
             transitionList[nextTransition].play();
             return;
         }
@@ -309,21 +265,17 @@ canvas.addEventListener("click", function (event) {
 canvas.addEventListener("mousemove", function (event) {
     mousePosX = Math.round(event.clientX - canvasBoundingBox.left);
     mousePosY = Math.round(event.clientY - canvasBoundingBox.top);
-
     drawHighlights();
-
-    // console.log("(" + mousePosX + " , " + mousePosY + ")");
 });
 
 // ==================== FUNÇÕES DE DESENHO ====================
 
 // desenha barra de itens
 function drawItemBox() {
-    var x = canvas.width * 0.05;
-    var y = canvas.height * 0.01;
-    var width = canvas.width - canvas.width * 0.1;
-    var height = canvas.height * 0.15;
-
+    let x = canvas.width * 0.05;
+    let y = canvas.height * 0.01;
+    let width = canvas.width - canvas.width * 0.1;
+    let height = canvas.height * 0.15;
     context.beginPath();
     context.fillStyle = 'rgba(0, 0, 0, 0.5)';
     context.fillRect(x, y, width, height);
@@ -332,10 +284,8 @@ function drawItemBox() {
 
 // desenhar highlights dos objetos e dos locais
 function drawHighlights() {
-    // objetos
-    for (var i = 0; i < currentScenario.sceneObjects.length; i++) {
-        var object = currentScenario.sceneObjects[i];
-
+    for (let i = 0; i < currentScenario.sceneObjects.length; i++) {
+        let object = currentScenario.sceneObjects[i];
         if (object.isSelected(mousePosX, mousePosY)) {
             context.beginPath();
             context.strokeStyle = 'red';
@@ -354,45 +304,15 @@ function clear(c) {
 // ==================== AUDIO  ====================
 
 function playAudio(idRadioButton) {
-    var player = document.getElementById("gameRadio");
-
-    switch (idRadioButton) {
-        case 1:
-            var newSourceAudio = document.getElementById("nowPlaying");
-            newSourceAudio.src = "audio/track1.mp3";
-            player.load();
-            player.play();
-            break;
-        case 2:
-            var newSourceAudio = document.getElementById("nowPlaying");
-            newSourceAudio.src = "audio/track2.mp3";
-            player.load();
-            player.play();
-            break;
-        case 3:
-            var newSourceAudio = document.getElementById("nowPlaying");
-            newSourceAudio.src = "audio/track3.mp3";
-            player.load();
-            player.play();
-            break;
-        case 4:
-            var newSourceAudio = document.getElementById("nowPlaying");
-            newSourceAudio.src = "audio/track4.mp3";
-            player.load();
-            player.play();
-            break;
-        default:
-            sourceAudio.src = "";
-            player.load();
-            player.pause();
-    }
+    document.getElementById("nowPlaying").src = `resources/audio/${idRadioButton}.mp3`;
+    let player = document.getElementById("gameRadio");
+    player.load();
+    player.play();
 }
 
 function audioButtonAction() {
-
-    var button = document.getElementById("button_box1");
-    var div = document.getElementById("body_box1");
-    // div.style.display = 'none';
+    let button = document.getElementById("button_box1");
+    let div = document.getElementById("body_box1");
 
     button.onclick = function () {
         if (div.className === "hidden") {
@@ -403,9 +323,6 @@ function audioButtonAction() {
             button.innerHTML = "CLIQUE AQUI PARA VER A PLAYLIST";
         }
     };
-
-    // var firstMusic = document.getElementById(nMusica);
-    // firstMusic.click();
 }
 
 // ==================== LOOP PRINCIPAL  ====================
@@ -413,5 +330,4 @@ function audioButtonAction() {
 window.onload = function () {
     transitionList['Acordando'].play();
     audioButtonAction();
-    // currentScenario.chooseMe();
 };
