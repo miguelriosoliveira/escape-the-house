@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game!</title>
+    <link rel="stylesheet" type="text/css" href="game.css">
+    <meta charset="utf-8"></meta>
+</head>
+<body>
+<div id="gameElements">
+    <canvas id="gameScreen" width="960" height="540">
+        Este navegador não possui suporte a canvas!
+    </canvas>
+
+    <!-- RADIO BOX -->
+    <div id="box1">
+        <div id="header_box1">
+            <b>SOUNDTRACKS</b>
+            <button id="button_box1">CLIQUE AQUI PARA VER A PLAYLIST</button>
+        </div>
+        <div id="body_box1" class="hidden">
+            <form autocomplete="off">
+                <input type="radio" id="1" name="Track" onclick="playAudio(1);"> Para dormir <br>
+                <input type="radio" id="2" name="Track" onclick="playAudio(2);"> Para jogar <br>
+                <input type="radio" id="3" name="Track" onclick="playAudio(3);"> Para matar <br>
+                <input type="radio" id="4" name="Track" onclick="playAudio(4);"> Para se matar <br>
+            </form>
+        </div>
+    </div>
+
+    <!-- RADIO PLAYER -->
+    <audio id="gameRadio" loop>
+        <source id="nowPlaying" src="" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <!-- ITENS BOX -->
+    <div id="itemBox">
+        <div id="header_itemBox">
+            <b>TAREFAS</b>
+        </div>
+        <div id="body_itemBox">
+            <form autocomplete="off">
+                <input type="checkbox" id="item1" disabled> Se vestir <br>
+                <input type="checkbox" id="item2" disabled> Tomar café <br>
+                <input type="checkbox" id="item3" disabled> Ir ao banheiro <br>
+                <input type="checkbox" id="item4" disabled> Pegar carteira <br>
+                <input type="checkbox" id="item5" disabled> Pegar chaves <br>
+            </form>
+        </div>
+    </div>
+
+    <video id="transition" controls="false" src="" hidden/>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
