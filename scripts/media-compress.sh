@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-zip -r resources
+7z a media.7z resources/

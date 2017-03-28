@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-unzip media.zip
+7z e media.7z
