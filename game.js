@@ -11,6 +11,8 @@ let fontSize = 30;
 let locationX = canvas.width * 0.05;
 let locationY = canvas.height * 0.95;
 
+let currentTransition;
+
 // ===================== CLASSE CLICKABLE =====================
 
 let Clickable = function (x, y) {
@@ -58,12 +60,12 @@ let Location = function (name, x, y, font) {
 
 // ===================== CLASSE CENÁRIO =====================
 
-writeLocations = function () {
+function writeLocations() {
     for (let i = 0; i < currentScenario.locationList.length; i++) {
         let location = currentScenario.locationList[i];
         location.writeInCanvas(context);
     }
-};
+}
 
 let Scenario = function (sceneObjects, locationList, backgroundImage) {
     this.sceneObjects = sceneObjects;
@@ -83,8 +85,11 @@ let Scenario = function (sceneObjects, locationList, backgroundImage) {
     };
 };
 
-drawTransition = function (v) {
+function drawTransition(v) {
     if (v.ended || (v.currentTime >= currentTransition.end)) {
+
+        if (!currentScenario)return;
+
         //desenha o prox cenario
         currentScenario = scenarios[currentTransition.sceneEnd];
         currentScenarioName = currentTransition.sceneEnd;
@@ -99,7 +104,7 @@ drawTransition = function (v) {
     }
     context.drawImage(v, 0, 0, canvas.width, canvas.height);
     setTimeout(drawTransition, 20, v);
-};
+}
 
 let Transition = function (id, src, begin, end, sceneEnd) {
     this.id = id;
@@ -115,12 +120,14 @@ let Transition = function (id, src, begin, end, sceneEnd) {
 
         videoPlayer.addEventListener('play', function () {
             drawTransition(this);
-            this.removeEventListener('play', arguments.callee);
+            this.removeEventListener('play', videoPlayer);
+            // this.removeEventListener('play', arguments.callee);
         }, false);
         videoPlayer.addEventListener('loadeddata', function () {
             videoPlayer.currentTime = currentTransition.begin;
             videoPlayer.play();
-            this.removeEventListener('loadeddata', arguments.callee);
+            this.removeEventListener('loadeddata', videoPlayer);
+            // this.removeEventListener('loadeddata', arguments.callee);
         });
     };
 };
@@ -195,6 +202,8 @@ let currentScenarioName = 'Quarto';
 canvas.addEventListener("click", function (event) {
     mouseClickX = Math.round(event.clientX - canvasBoundingBox.left);
     mouseClickY = Math.round(event.clientY - canvasBoundingBox.top);
+
+    if (!currentScenario)return;
 
     // se clicou em algum objeto do cenário, muda estado do checkbox correspondente
     for (let i = 0; i < currentScenario.sceneObjects.length; i++) {
@@ -284,6 +293,7 @@ function drawItemBox() {
 
 // desenhar highlights dos objetos e dos locais
 function drawHighlights() {
+    if (!currentScenario)return;
     for (let i = 0; i < currentScenario.sceneObjects.length; i++) {
         let object = currentScenario.sceneObjects[i];
         if (object.isSelected(mousePosX, mousePosY)) {
