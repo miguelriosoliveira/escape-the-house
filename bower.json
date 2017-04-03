@@ -1,0 +1,20 @@
+{
+    "name": "escape-the-house",
+    "homepage": "https://github.com/miguelriosoliveira/escape-the-house",
+    "authors": [
+        "Miguel Rios <miguelriosoliveira@gmail.com>"
+    ],
+    "description": "\"Escape the Room\" game",
+    "main": "game.html",
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "devDependencies": {
+        "bootstrap": "^3.3.7"
+    }
+}

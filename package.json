@@ -1,0 +1,25 @@
+{
+    "name": "escape-the-house",
+    "version": "1.0.0",
+    "description": "\"Escape the Room\" game",
+    "main": "game.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/miguelriosoliveira/escape-the-house.git"
+    },
+    "author": "Miguel Rios <miguelriosoliveira@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/miguelriosoliveira/escape-the-house/issues"
+    },
+    "homepage": "https://github.com/miguelriosoliveira/escape-the-house#readme",
+    "devDependencies": {
+        "babel-preset-es2015": "^6.24.0",
+        "browser-sync": "^2.18.8",
+        "gulp": "^3.9.1",
+        "gulp-babel": "^6.1.2"
+    }
+}

@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>Game!</title>
-    <link rel="stylesheet" type="text/css" href="game.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="game.css">
     <meta charset="utf-8"/>
 </head>
 <body>
@@ -19,14 +20,18 @@
         </div>
         <div id="body_box1" class="hidden">
             <form autocomplete="off">
-                <label for="track1">Para dormir</label>
-                <input type="radio" id="track1" onclick="playAudio(1)">
-                <label for="track2">Para jogar</label>
-                <input type="radio" id="track2" onclick="playAudio(2)">
-                <label for="track3">Para matar</label>
-                <input type="radio" id="track3" onclick="playAudio(3)">
-                <label for="track4">Para se matar</label>
-                <input type="radio" id="track4" onclick="playAudio(4)">
+                <label>
+                    <input id="track1" type="radio" onclick="playAudio(1)"> Para dormir
+                </label>
+                <label>
+                    <input id="track2" type="radio" onclick="playAudio(2)"> Para jogar
+                </label>
+                <label>
+                    <input id="track3" type="radio" onclick="playAudio(3)"> Para matar
+                </label>
+                <label>
+                    <input id="track4" type="radio" onclick="playAudio(4)"> Para se matar
+                </label>
             </form>
         </div>
     </div>
@@ -42,25 +47,28 @@
         <div id="header_itemBox">
             <b>TAREFAS</b>
         </div>
-        <div id="body_itemBox">
-            <form autocomplete="off">
-                <label for="item1">Se vestir</label>
-                <input type="checkbox" id="item1" disabled>
-                <label for="item2">Tomar café</label>
-                <input type="checkbox" id="item2" disabled>
-                <label for="item3">Ir ao banheiro</label>
-                <input type="checkbox" id="item3" disabled>
-                <label for="item4">Pegar carteira</label>
-                <input type="checkbox" id="item4" disabled>
-                <label for="item5">Pegar chaves</label>
-                <input type="checkbox" id="item5" disabled>
-            </form>
+        <div id="body_itemBox" class="row">
+            <!--<form autocomplete="off">-->
+            <label>
+                <input id="item1" type="checkbox" disabled> Se vestir
+            </label>
+            <label>
+                <input id="item2" type="checkbox" disabled> Tomar café
+            </label>
+            <label>
+                <input id="item3" type="checkbox" disabled> Ir ao banheiro
+            </label>
+            <label>
+                <input id="item4" type="checkbox" disabled> Pegar carteira
+            </label>
+            <!--</form>-->
         </div>
     </div>
 
     <video id="transition" controls="false" src="" hidden></video>
 </div>
 
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
